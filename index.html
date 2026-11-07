@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ladder</title>
+<meta name="description" content="Ladder: a cozy word-ladder puzzle. Change one letter at a time to help a sleepy cat climb up to its top bunk.">
+<meta name="theme-color" content="#fdf6ec">
+<meta property="og:title" content="Ladder 🪜💤">
+<meta property="og:description" content="Change one letter at a time to help a sleepy cat climb to bed.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- reusable SVG defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="gingham" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#aab9ec"/>
+      <rect width="8" height="16" fill="#93a6e3" opacity=".75"/>
+      <rect width="16" height="8" fill="#93a6e3" opacity=".75"/>
+      <rect width="8" height="8" fill="#7f93d8" opacity=".7"/>
+    </pattern>
+    <symbol id="i-shoe" viewBox="0 0 40 30"><path d="M4 21c0-6 2-11 4-13 2 2 5 3 8 2l3 5c4 1 9 2 13 4 3 1 5 3 4 5H6c-1 0-2-1-2-3z" fill="#fff" stroke="#5e4130" stroke-width="2.2" stroke-linejoin="round"/><path d="M4 24h32" stroke="#5e4130" stroke-width="2.2"/><path d="M14 14l3-2M17 17l3-2M20 20l3-1.5" stroke="#5e4130" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 40 44"><g stroke="#e9b949" stroke-width="2.6" stroke-linecap="round"><path d="M20 2v4M6 8l3 3M34 8l-3 3M2 20h4M38 20h-4"/></g><path d="M20 9a11 11 0 0 0-6.5 19.8c1.4 1.1 2 2.4 2 4h9c0-1.6.6-2.9 2-4A11 11 0 0 0 20 9z" fill="#f8d76c" stroke="#5e4130" stroke-width="2.2"/><path d="M17 24l3-4 3 4" fill="none" stroke="#c69a3a" stroke-width="1.8" stroke-linecap="round"/><rect x="15" y="33" width="10" height="6" rx="2" fill="#d9cbb8" stroke="#5e4130" stroke-width="2"/><path d="M17 41h6" stroke="#5e4130" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-restart" viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.1-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M18 3v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.7 5.8 6.3.7-4.7 4.3 1.3 6.3L12 16.4 6.4 19.6l1.3-6.3L3 9l6.3-.7z" fill="#f6dc8e" stroke="#ecc766" stroke-width="1.2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 1c1 6 5 10 11 11-6 1-10 5-11 11-1-6-5-10-11-11 6-1 10-5 11-11z" fill="#f6dc8e"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 60 30"><path d="M12 28a10 10 0 0 1 0-20 13 13 0 0 1 24-3 10 10 0 0 1 14 7 8 8 0 0 1-2 16z" fill="#f7ebdf"/></symbol>
+    <!-- standing cat -->
+    <symbol id="catsym" viewBox="0 0 100 110">
+      <g class="tail"><path d="M70 92c14 2 22-6 18-18-2-6-8-6-8 0 0 6-4 10-12 10" fill="#fffaf3" stroke="#5e4130" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M83 74c3-2 6 0 5 4" fill="none" stroke="#f0bf98" stroke-width="5" stroke-linecap="round"/></g>
+      <path d="M26 100c-4-16 2-36 24-36s28 20 24 36z" fill="#fffaf3" stroke="#5e4130" stroke-width="2.6" stroke-linejoin="round"/>
+      <path d="M58 70c8 2 14 8 16 16-6-2-12-8-16-16z" fill="#f4caa6" opacity=".8"/>
+      <ellipse cx="38" cy="101" rx="9" ry="6" fill="#fffaf3" stroke="#5e4130" stroke-width="2.4"/>
+      <ellipse cx="62" cy="101" rx="9" ry="6" fill="#fffaf3" stroke="#5e4130" stroke-width="2.4"/>
+      <path d="M50 76v18" stroke="#e8d8c5" stroke-width="2" stroke-linecap="round"/>
+      <path d="M20 26c-1-10 0-18 4-20 5 2 11 8 15 13M80 26c1-10 0-18-4-20-5 2-11 8-15 13" fill="#fffaf3" stroke="#5e4130" stroke-width="2.6" stroke-linejoin="round"/>
+      <ellipse cx="50" cy="44" rx="31" ry="25" fill="#fffaf3" stroke="#5e4130" stroke-width="2.6"/>
+      <path d="M24 12c3 2 7 6 9 9-4 1-7 3-9 6z" fill="#f4caa6"/><path d="M76 12c-3 2-7 6-9 9 4 1 7 3 9 6z" fill="#f0b8a9"/>
+      <path d="M58 21c8-2 16 2 20 9-5-2-10-2-14 1-2-4-4-7-6-10z" fill="#f4caa6" opacity=".9"/>
+      <path d="M34 46q5 4 10 0M56 46q5 4 10 0" fill="none" stroke="#5e4130" stroke-width="2.6" stroke-linecap="round"/>
+      <ellipse cx="31" cy="53" rx="5" ry="3" fill="#f6b3ad" opacity=".75"/><ellipse cx="69" cy="53" rx="5" ry="3" fill="#f6b3ad" opacity=".75"/>
+      <path d="M48 50h4l-2 2.4z" fill="#e48a86" stroke="#c46a66" stroke-width="1" stroke-linejoin="round"/>
+      <path d="M45.5 54.5q2.2 2.6 4.5 0q2.3 2.6 4.5 0" fill="none" stroke="#5e4130" stroke-width="2" stroke-linecap="round"/>
+      <g class="bow"><path d="M50 68l-11-6v12zM50 68l11-6v12z" fill="#e58884" stroke="#b9564f" stroke-width="1.8" stroke-linejoin="round"/><circle cx="50" cy="68" r="3.4" fill="#d9706c" stroke="#b9564f" stroke-width="1.6"/></g>
+    </symbol>
+    <!-- sleeping cat head (for beds) -->
+    <symbol id="cathead" viewBox="0 0 90 60">
+      <path d="M14 26c-1-9 1-16 4-18 5 2 10 7 13 11M76 26c1-9-1-16-4-18-5 2-10 7-13 11" fill="#fffaf3" stroke="#5e4130" stroke-width="2.4" stroke-linejoin="round"/>
+      <ellipse cx="45" cy="38" rx="31" ry="22" fill="#fffaf3" stroke="#5e4130" stroke-width="2.4"/>
+      <path d="M18 12c3 2 6 5 8 8-4 1-6 3-8 5z" fill="#f4caa6"/><path d="M53 17c8-3 16 0 21 7-5-2-10-1-14 2-2-4-4-6-7-9z" fill="#f4caa6"/>
+      <path d="M29 39q5 4 10 0M51 39q5 4 10 0" fill="none" stroke="#5e4130" stroke-width="2.4" stroke-linecap="round"/>
+      <ellipse cx="26" cy="46" rx="4.5" ry="2.6" fill="#f6b3ad" opacity=".8"/><ellipse cx="64" cy="46" rx="4.5" ry="2.6" fill="#f6b3ad" opacity=".8"/>
+      <path d="M43 43h4l-2 2.2z" fill="#e48a86"/>
+      <path d="M41 47q2 2.2 4 0q2 2.2 4 0" fill="none" stroke="#5e4130" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <!-- bunk bed (top part) -->
+    <symbol id="bunk" viewBox="0 0 320 112">
+      <rect x="14" y="8" width="16" height="96" rx="7" fill="#d9a774" stroke="#a8743f" stroke-width="2"/>
+      <rect x="290" y="8" width="16" height="96" rx="7" fill="#d9a774" stroke="#a8743f" stroke-width="2"/>
+      <rect x="22" y="22" width="276" height="12" rx="6" fill="#e2b585" stroke="#a8743f" stroke-width="2"/>
+      <rect x="26" y="56" width="268" height="30" rx="12" fill="#fbf3e6" stroke="#cdb08f" stroke-width="2"/>
+      <rect x="10" y="80" width="300" height="20" rx="8" fill="#dcac7b" stroke="#a8743f" stroke-width="2"/>
+      <path d="M22 86h276" stroke="#c48d5a" stroke-width="2" opacity=".6"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="game" id="game">
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><g transform="rotate(10 20 20)"><rect x="8" y="2" width="6" height="36" rx="3" fill="#d9a774" stroke="#a8743f" stroke-width="1.6"/><rect x="26" y="2" width="6" height="36" rx="3" fill="#d9a774" stroke="#a8743f" stroke-width="1.6"/><g fill="#e8be8f" stroke="#a8743f" stroke-width="1.4"><rect x="11" y="9" width="18" height="4.5" rx="2"/><rect x="11" y="18" width="18" height="4.5" rx="2"/><rect x="11" y="27" width="18" height="4.5" rx="2"/></g></g></svg>
+      <span>Ladder</span>
+    </div>
+    <div class="head-btns">
+      <button class="pill-btn" id="rulesBtn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.4 9.4a2.7 2.7 0 1 1 3.6 2.5c-.7.3-1 .9-1 1.6v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.2" r="1.2" fill="currentColor"/></svg>Rules</button>
+      <button class="pill-btn" id="restartBtn"><svg><use href="#i-restart"/></svg>Restart</button>
+    </div>
+  </header>
+
+  <section class="scene" id="scene">
+    <svg class="wall-deco" id="wallDeco" aria-hidden="true"></svg>
+    <aside class="side">
+      <div class="bubble">Change one letter at a time to reach the ending word!<svg class="spark"><use href="#i-spark"/></svg></div>
+      <div class="stat"><svg><use href="#i-shoe"/></svg><span><b id="movesLeft">6</b> <span id="movesWord">moves</span> left</span></div>
+      <button class="hint-btn" id="hintBtn">
+        <span class="top"><svg><use href="#i-bulb"/></svg><span id="hintLabel">Need a hint?</span></span>
+        <small id="hintsLeft">3 hints left</small>
+      </button>
+    </aside>
+    <div class="climb">
+      <div class="ladder" id="ladder">
+        <svg class="bed" id="bed" viewBox="0 0 320 112" aria-hidden="true">
+          <use href="#bunk"/>
+          <rect x="196" y="38" width="86" height="30" rx="14" fill="#fff" stroke="#cdb08f" stroke-width="2"/>
+          <path d="M210 46q30-6 60 0" stroke="#efe4d6" stroke-width="2" fill="none"/>
+          <g class="sleeper"><use href="#cathead" x="196" y="12" width="84" height="56"/></g>
+          <g class="zzz" fill="#8a6650" font-family="Fredoka" font-weight="600"><text x="276" y="22" font-size="14">z</text><text x="286" y="12" font-size="17">z</text><text x="298" y="2" font-size="20">Z</text></g>
+          <path d="M30 60c50-14 130-16 200-6 10 1 14 6 14 12v14c0 4-3 6-6 6H34c-4 0-6-2-6-6z" fill="url(#gingham)" stroke="#7d8fd0" stroke-width="2"/>
+          <path d="M44 62c60-10 120-10 180-2" stroke="#c7d1f5" stroke-width="3" fill="none" opacity=".6"/>
+          <g class="blanket-fold"><path d="M170 58c30-6 70-6 112-2 6 1 8 5 8 10v14c0 4-3 6-6 6H174c-4 0-6-2-6-6z" fill="url(#gingham)" stroke="#7d8fd0" stroke-width="2"/><path d="M176 62c34-5 70-5 106-1" stroke="#c7d1f5" stroke-width="3" fill="none" opacity=".7"/></g>
+        </svg>
+        <div class="rail l"></div><div class="rail r"></div>
+        <div class="rungs" id="rungs"></div>
+      </div>
+    </div>
+    <div class="cat" id="cat" aria-hidden="true"><svg viewBox="0 0 100 110"><use href="#catsym"/></svg></div>
+  </section>
+
+  <form class="controls" id="form" autocomplete="off">
+    <label for="word" class="sr">Enter your word</label>
+    <input id="word" placeholder="Enter your word..." maxlength="10" autocapitalize="characters" spellcheck="false" autocorrect="off" enterkeyhint="go">
+    <button class="btn-pink" id="submitBtn" type="submit">Submit</button>
+  </form>
+  <div class="sr" aria-live="polite" id="live"></div>
+
+  <!-- overlays -->
+  <div class="dim" id="dim"></div>
+  <div class="modal hint-modal" id="hintModal" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
+    <div class="bulb-bump"></div><svg class="bulb-icon"><use href="#i-bulb"/></svg>
+    <button class="close-x" data-close aria-label="Close">✕</button>
+    <h2 id="hintTitle">Hint #1</h2>
+    <p id="hintText"></p>
+    <span class="own" id="hintOwn" hidden>You're on your own now! You've got this!</span>
+    <button class="btn-pink small" data-close>Got it!</button>
+    <div class="hints-left-pill" id="hintPill">2 hints left</div>
+  </div>
+  <div class="modal toast" id="toast" role="alertdialog" aria-labelledby="toastTitle">
+    <div class="row"><div class="bang">!</div><div><h3 id="toastTitle">Not a valid word!</h3><p id="toastSub">Please try another word.</p></div></div>
+    <button class="btn-pink" data-close id="toastOk">OK</button>
+  </div>
+  <div class="modal rules-modal" id="rulesModal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+    <button class="close-x" data-close aria-label="Close">✕</button>
+    <h2 id="rulesTitle">How to climb</h2>
+    <ul>
+      <li><span>Start with the word at the <b>bottom</b>.</span></li>
+      <li><span>Reach the word at the <b>top</b>.</span></li>
+      <li><span>Change <b>one letter</b> each move.</span></li>
+      <li><span>Don't move letters around.</span></li>
+      <li><span>Every word must be a real word.</span></li>
+      <li><span>Don't use the same word twice.</span></li>
+      <li><span>Each good word moves kitty up one step.</span></li>
+      <li><span>You have <b>6 moves</b>.</span></li>
+      <li><span>You have <b>3 hints</b>. Hints don't use up moves.</span></li>
+    </ul>
+    <div class="ex"><span>COLD →</span> <span>CORD →</span> <span>CARD →</span> <span>WARD →</span> <span>WARM</span></div>
+    <div class="center"><button class="btn-pink small" data-close>Let's climb!</button></div>
+  </div>
+
+  <!-- win -->
+  <section class="screen" id="winScreen" aria-live="polite">
+    <svg class="deco" id="winDeco" aria-hidden="true"></svg>
+    <svg class="win-title" viewBox="0 0 560 130" role="img" aria-label="You made it to bed!">
+      <path id="arc" d="M20 124 Q280 6 540 124" fill="none"/>
+      <text><textPath href="#arc" startOffset="50%" text-anchor="middle">YOU MADE IT TO BED!</textPath></text>
+      <g stroke="#f2cf68" stroke-width="5" stroke-linecap="round"><path d="M18 100l-14-6M22 82l-12-12M540 100l14-6M536 82l12-12"/></g>
+    </svg>
+    <svg class="win-bed" viewBox="0 0 360 230" aria-hidden="true">
+      <g transform="translate(-10 70) scale(.25)" opacity=".7"><rect width="120" height="210" rx="12" fill="#efe6dd" stroke="#d8c8b8" stroke-width="5"/><g stroke="#d8c8b8" stroke-width="6"><path d="M10 40h100M10 80h100M10 120h100M10 160h100"/></g></g>
+      <rect x="42" y="70" width="22" height="150" rx="9" fill="#d9a774" stroke="#a8743f" stroke-width="2.4"/>
+      <rect x="296" y="70" width="22" height="150" rx="9" fill="#d9a774" stroke="#a8743f" stroke-width="2.4"/>
+      <rect x="64" y="72" width="232" height="14" rx="7" fill="#e2b585" stroke="#a8743f" stroke-width="2"/>
+      <ellipse cx="128" cy="110" rx="56" ry="26" fill="#fff" stroke="#cdb08f" stroke-width="2.4"/>
+      <use href="#cathead" x="96" y="44" width="124" height="84"/>
+      <path d="M54 124c60-24 190-26 250-6 8 3 10 8 10 14v28c0 6-4 9-9 9H58c-6 0-9-3-9-9v-28c0-4 2-7 5-8z" fill="url(#gingham)" stroke="#7d8fd0" stroke-width="2.6"/>
+      <path d="M70 128c60-18 160-18 220-2" stroke="#c7d1f5" stroke-width="4" fill="none" opacity=".6"/>
+      <ellipse cx="128" cy="128" rx="13" ry="7" fill="#fffaf3" stroke="#5e4130" stroke-width="2.2"/>
+      <ellipse cx="160" cy="128" rx="13" ry="7" fill="#fffaf3" stroke="#5e4130" stroke-width="2.2"/>
+      <rect x="40" y="168" width="282" height="26" rx="10" fill="#dcac7b" stroke="#a8743f" stroke-width="2.4"/>
+      <g class="zzz-win" fill="#5e4130" font-family="Fredoka" font-weight="600"><text x="216" y="66" font-size="22" class="twinkle">z</text><text x="234" y="48" font-size="26" class="twinkle" style="animation-delay:.4s">z</text><text x="254" y="28" font-size="30" class="twinkle" style="animation-delay:.8s">z</text></g>
+    </svg>
+    <div class="win-msg">All that climbing paid off.<br>Time to get cozy!</div>
+    <div class="stats">
+      <div class="statcard"><svg><use href="#i-shoe"/></svg><div>Moves Used<b id="wMoves">4 / 6</b></div></div>
+      <div class="statcard"><svg><use href="#i-bulb"/></svg><div>Hints Used<b id="wHints">1 / 3</b></div></div>
+    </div>
+    <div class="mine" id="wPath"></div>
+    <button class="btn-pink btn-big" id="playAgain"><svg><use href="#i-restart"/></svg>Play Again</button>
+  </section>
+
+  <!-- lose -->
+  <section class="screen" id="loseScreen" aria-live="polite">
+    <svg class="deco" id="loseDeco" aria-hidden="true"></svg>
+    <div class="lose-card">
+      <h2 id="loseTitle">Looks like you ran out of moves!</h2>
+      <div class="sub">Looks like you're staying on the<br>lower bunk today!</div>
+      <div class="mini" id="mini">
+        <svg class="minicat" viewBox="0 0 120 70" aria-hidden="true">
+          <path d="M66 10c-4-6 4-10 7-5 3 4-3 8-6 5-2-2 0-4 2-3" fill="none" stroke="#9a7b66" stroke-width="2" stroke-linecap="round"/>
+          <use href="#cathead" x="18" y="6" width="84" height="56"/>
+          <ellipse cx="44" cy="62" rx="10" ry="6" fill="#fffaf3" stroke="#5e4130" stroke-width="2"/><ellipse cx="76" cy="62" rx="10" ry="6" fill="#fffaf3" stroke="#5e4130" stroke-width="2"/>
+        </svg>
+        <div class="rail l"></div><div class="rail r"></div>
+        <div class="rungs" id="miniRungs"></div>
+      </div>
+      <div class="sol-label">The correct solution was:</div>
+      <div class="sol" id="solText"></div>
+      <div class="mine" id="lPath"></div>
+      <button class="btn-pink btn-big" id="tryAgain"><svg><use href="#i-restart"/></svg>Try Again</button>
+    </div>
+  </section>
+</main>
+
+<script src="js/words.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
